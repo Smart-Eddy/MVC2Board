@@ -106,5 +106,45 @@ public class BoardDAO {
 		return v;
 	}
 	
+	//글작성 Method
+	public void insertBoard(BoardBean bean) {
+		
+		getConnection();
+		
+		int ref = 0;
+		int re_step = 1; 
+		int re_level = 1; 
+		
+		try {
+			String sql = "select max(ref) from board";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				ref = rs.getInt(1) + 1; //가장 큰 값에 1더해줌
+			}
+			//데이터를 삽입하는 쿼리
+			String sql2 = "insert into board values(board_seq.nextval,?,?,?,?,sysdate,?,?,?,0,?)";
+			pstmt = conn.prepareStatement(sql2);
+			
+			pstmt.setString(1, bean.getWriter());
+			pstmt.setString(2, bean.getEmail());
+			pstmt.setString(3, bean.getSubject());
+			pstmt.setString(4, bean.getPassword());
+			pstmt.setInt(5, ref);
+			pstmt.setInt(6, re_step);
+			pstmt.setInt(7, re_level);
+			pstmt.setString(8, bean.getContent());
+			
+			pstmt.executeUpdate();
+			
+			pstmt.close();
+			conn.close();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 
 }//class
