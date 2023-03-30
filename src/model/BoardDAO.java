@@ -146,5 +146,50 @@ public class BoardDAO {
 		
 	}
 	
+	//글 상세정보 조회 -> 조회수가 증가해야한다. (트랜잭션)
+	public BoardBean getOneBoard(int num) {
+		
+		getConnection();
+		BoardBean bean = null;
+		try {
+		//조회수
+		String sql = "update board set readcount = readcount+1 where num = ?";
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, num);
+		
+		pstmt.executeUpdate();
+		//게시글 조회
+		String sql2 = "select * from board where num = ?";
+		pstmt = conn.prepareStatement(sql2);
+		pstmt.setInt(1, num);
+		rs = pstmt.executeQuery();
+		
+		if(rs.next()) {
+			bean = new BoardBean();
+			
+			bean.setNum(rs.getInt(1));
+			bean.setWriter(rs.getString(2));
+			bean.setEmail(rs.getString(3));
+			bean.setSubject(rs.getString(4));
+			bean.setPassword(rs.getString(5));
+			bean.setReg_date(rs.getDate(6).toString());
+			bean.setRef(rs.getInt(7));
+			bean.setRe_step(rs.getInt(8));
+			bean.setRe_level(rs.getInt(9));
+			bean.setReadcount(rs.getInt(10));
+			bean.setContent(rs.getString(11));
+		}
+		
+		rs.close();
+		pstmt.close();
+		conn.close();
+
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return bean;
+	}
+	
 
 }//class

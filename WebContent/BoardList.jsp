@@ -36,7 +36,7 @@
 			&nbsp;
 			</c:forEach>
 			</c:if>
-			<a href="BoardInfoController.do?num=${bean.num}">${bean.subject}</a>
+			<a href="BoardInfo.do?num=${bean.num}">${bean.subject}</a>
 			
 		</td>
 		<td width="100" align="left">${bean.writer}</td>
