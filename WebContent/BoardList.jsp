@@ -9,6 +9,13 @@
 <title>게시글조회</title>
 </head>
 <body>
+
+<c:if test="${msg != null}">
+	<script type="text/javascript">
+		alert("${msg}");
+	</script>
+</c:if>
+
 <center>
 <h2>게시글 조회</h2>
 <table width="700" border="1" bordercolor="gray">
